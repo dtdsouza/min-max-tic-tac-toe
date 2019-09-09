@@ -1,6 +1,7 @@
 const Node = require('./Node')
 
 let counter = 1
+let counter2 = 0
 
 const verifyWin = (board) => {
   const principalDiagonal = board[0][0] + board[1][1] + board[2][2]
@@ -39,7 +40,7 @@ const generateTree = (node) => {
   const isFinal = verifyWin(node.board)
   if ([1, -1].includes(isFinal)) {
     node.value = isFinal
-    return
+    return node.value
   }
 
   for (let i = 0; i < 3; ++i) {
@@ -56,6 +57,32 @@ const generateTree = (node) => {
   }
 }
 
+const generateMinMaxValues = (node) => {
+  counter2++
+  if ( node.value ) {
+    return node.value
+  }
+  
+  const miniMax = []
+
+  node.childrem.forEach((child) => {
+    if ( child.value === node.whosPlay ){
+      node.value = node.whosPlay
+      return node.value
+    } else {
+      miniMax.push(generateMinMaxValues(child))
+    }
+  })
+
+  if(node.whosPlay === 1){
+    node.value = Math.max(...miniMax)
+  } else {
+    node.value = Math.min(...miniMax)
+  }
+  
+  return 0
+}
+
 const main = () => {
   const board = [ [0,0,0],[0,0,0],[0,0,0] ]
 
@@ -63,7 +90,11 @@ const main = () => {
 
   generateTree(root)
 
-  console.log(counter)
+  generateMinMaxValues(root)
+
+  console.log('Quantidade de Estados do tabuleiro abertos: ', counter)
+  console.log('Quantidade de Estados acessados pelo minimax: ', counter2)
+  console.log('Valor minimax da raiz da arvore: ', root.value)
 }
 
 main()
