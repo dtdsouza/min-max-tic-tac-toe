@@ -8,3 +8,11 @@ MiniMax full expansion for tic-tac-toe game
     - Generate childrem
 
 2 - Through depth search get all minimax values
+
+# To run code
+
+- Install Node.js
+
+- Execute node index.js
+
+- Done XD
